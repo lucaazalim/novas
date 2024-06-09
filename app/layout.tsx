@@ -6,16 +6,16 @@ import Navbar from "@/app/components/Navbar";
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
-    title: "g2",
+    title: "novas",
     description: "",
 };
 
 export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {
     return (
         <html lang="en">
-        <body className={`{inter.className} bg-gray-100`}>
+        <body className={`{inter.className} bg-gray-100 text-gray-800`}>
         <Navbar/>
-        <div className="max-w-[1200px] px-10 mt-10 mx-auto container">
+        <div className="max-w-[1200px] px-10 mx-auto container">
             {children}
         </div>
         </body>

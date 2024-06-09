@@ -1,13 +1,24 @@
-import fetchNews, {Article, NewsResponse} from "@/app/utils/news";
+import {Article, NewsResponse} from "@/app/utils/news";
 import {timeAgo} from "@/app/utils/datetime";
+import {FaFaceSadTear} from "react-icons/fa6";
 
-export default async function Catalog() {
+type CatalogProps = {
+    news?: NewsResponse;
+}
 
-    const response: NewsResponse = await fetchNews();
+export default function Catalog({news}: CatalogProps) {
 
-    return <div className="flex flex-col gap-10">
-        {response.articles.slice(3).map((article, index) =>
-            <CatalogArticle key={index} article={article}/>
+    if (!news) {
+        return;
+    }
+
+    const {articles} = news;
+
+    return <div className="grid grid-cols-1 sm:max-lg:grid-cols-2 lg:divide-y-2 max-lg:gap-5">
+        {articles.slice(3).map((article, index) =>
+            <div key={index}>
+                <CatalogArticle article={article}/>
+            </div>
         )}
     </div>;
 
@@ -19,17 +30,23 @@ type CatalogArticleProps = {
 
 function CatalogArticle({article}: CatalogArticleProps) {
 
-    return <div className="grid grid-cols-1 md:grid-cols-6 gap-5">
-        <a href={article.url} className="md:col-span-2">
+    const imgClasses = "rounded-t-xl lg:rounded-xl min-w-full min-h-64 max-h-64 sm:max-lg:min-h-48 sm:max-lg:max-h-48 md:min-h-48";
+
+    return <div
+        className="grid grid-cols-1 lg:grid-cols-8 lg:my-5 max-lg:bg-white max-lg:rounded-xl lg:gap-x-5">
+        <a href={article.url} className="lg:col-span-3">
             {article.urlToImage
                 ? <img
                     src={article.urlToImage}
-                    className="object-cover w-full max-h-48 min-w-full min-h-96 md:min-h-48 rounded-xl"
+                    className={`object-cover ${imgClasses}`}
                 />
-                : <></>
+                : <div
+                    className={`flex justify-center items-center text-4xl text-gray-400 bg-gray-300 ${imgClasses}`}>
+                    <FaFaceSadTear/>
+                </div>
             }
         </a>
-        <div className="md:col-span-4 flex flex-col justify-between">
+        <div className="lg:col-span-5 flex flex-col justify-between gap-3 max-lg:p-3">
             <div>
                 {article.source?.name && <h3 className="font-semibold">{article.source.name}</h3>}
                 <a href={article.url}>

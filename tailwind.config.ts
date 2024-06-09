@@ -9,8 +9,8 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                primary: '#ff3b3b',
-                secondary: '#e13434'
+                primary: '#0c2faa',
+                secondary: '#092483'
             },
             dropShadow: {
                 'intense': '1px 1px 6px #000000',
