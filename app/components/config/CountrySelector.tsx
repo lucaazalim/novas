@@ -5,7 +5,7 @@ import {getFlagEmoji} from "@/app/utils/emoji";
 type CountrySelectorProps = {
     isOpen: boolean;
     onClose: () => void;
-    selected: Country;
+    selected?: Country;
     select: (country: Country) => void;
 }
 

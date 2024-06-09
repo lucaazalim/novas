@@ -49,7 +49,7 @@ export type Country = {
     name: string;
 }
 
-export const UnitedStates = {code: 'us', name: 'United States'};
+export const UnitedStates = {code: 'US', name: 'United States'};
 
 export const Countries: Country[] = [
     {code: 'ZA', name: 'South Africa'},

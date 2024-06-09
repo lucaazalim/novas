@@ -5,7 +5,7 @@ import {IconType} from "react-icons";
 type CategorySelectorProps = {
     isOpen: boolean;
     onClose: () => void;
-    selected: Category;
+    selected?: Category;
     select: (country: Category) => void;
 }
 
