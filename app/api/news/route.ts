@@ -11,15 +11,20 @@ export async function GET(request: NextRequest) {
     const country = Countries.find(country => country.code === countryCode);
 
     if (!country) {
-        return Response.error();
+        return new Response("Invalid country", {status: 400});
     }
 
     const category = Categories.find(category => category.key === categoryKey);
 
     if (!category) {
-        return Response.error();
+        return new Response("Invalid category", {status: 400});
     }
 
-    return Response.json(await fetchNews({country, category}));
-
+    try {
+        const response = await fetchNews({country, category});
+        return Response.json(response);
+    } catch (error) {
+        return new Response("Failed to fetch news: " + error, {status: 500});
+    }
+    
 }
