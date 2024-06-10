@@ -1,7 +1,15 @@
 "use client";
 
 import Catalog from "@/app/components/Catalog";
-import {Category, Country, getCategoryByKey, getCountryByCode, NewsResponse} from "@/app/utils/news";
+import {
+    Categories,
+    Category,
+    Country,
+    getCategoryByKey,
+    getCountryByCode,
+    NewsResponse,
+    UnitedStates
+} from "@/app/utils/news";
 import {useEffect, useState} from "react";
 import Featured from "@/app/components/Featured";
 import CountrySelector from "@/app/components/config/CountrySelector";
@@ -12,8 +20,8 @@ import Loading from "@/app/components/Loading";
 
 export default function Home() {
 
-    const [country, setCountry] = useState<Country>();
-    const [category, setCategory] = useState<Category>();
+    const [country, setCountry] = useState<Country>(UnitedStates);
+    const [category, setCategory] = useState<Category>(Categories[0]);
     const [news, setNews] = useState<NewsResponse | undefined>(undefined);
     const [isCountrySelectorOpen, setCountrySelectorOpen] = useState(false);
     const [isCategorySelectorOpen, setCategorySelectorOpen] = useState(false);
@@ -57,7 +65,6 @@ export default function Home() {
         }
 
         let url = `/api/news?country=${country.code}&category=${category.key}`;
-        console.log(url);
 
         fetch(url)
             .then(response => response.json())
