@@ -1,7 +1,7 @@
 "use client";
 
 import Catalog from "@/app/components/Catalog";
-import {Categories, Category, Countries, Country, NewsResponse} from "@/app/utils/news";
+import {Category, Country, getCategoryByKey, getCountryByCode, NewsResponse} from "@/app/utils/news";
 import {useEffect, useState} from "react";
 import Featured from "@/app/components/Featured";
 import CountrySelector from "@/app/components/config/CountrySelector";
@@ -21,9 +21,8 @@ export default function Home() {
     useEffect(() => {
         const storedCountryCode = localStorage.getItem("country");
         if (storedCountryCode) {
-            const storedCountry = Countries.find(country => country.code === storedCountryCode);
+            const storedCountry = getCountryByCode(storedCountryCode);
             if (storedCountry) {
-                console.log("Country loaded: " + storedCountry.code)
                 setCountry(storedCountry);
             }
         }
@@ -32,7 +31,7 @@ export default function Home() {
     useEffect(() => {
         const storedCategoryKey = localStorage.getItem("category");
         if (storedCategoryKey) {
-            const storedCategory = Categories.find(category => category.key === storedCategoryKey);
+            const storedCategory = getCategoryByKey(storedCategoryKey);
             if (storedCategory) {
                 setCategory(storedCategory);
             }
@@ -58,6 +57,7 @@ export default function Home() {
         }
 
         let url = `/api/news?country=${country.code}&category=${category.key}`;
+        console.log(url);
 
         fetch(url)
             .then(response => response.json())

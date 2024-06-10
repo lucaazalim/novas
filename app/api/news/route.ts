@@ -1,5 +1,5 @@
 import {NextRequest} from "next/server";
-import fetchNews, {Categories, Countries} from "@/app/utils/news";
+import fetchNews, {getCategoryByKey, getCountryByCode} from "@/app/utils/news";
 
 export async function GET(request: NextRequest) {
 
@@ -8,13 +8,21 @@ export async function GET(request: NextRequest) {
     const countryCode = searchParams.get("country");
     const categoryKey = searchParams.get("category");
 
-    const country = Countries.find(country => country.code === countryCode);
+    if (!countryCode) {
+        return new Response("Missing country parameter", {status: 400});
+    }
+
+    if (!categoryKey) {
+        return new Response("Missing category parameter", {status: 400});
+    }
+
+    const country = getCountryByCode(countryCode);
 
     if (!country) {
         return new Response("Invalid country", {status: 400});
     }
 
-    const category = Categories.find(category => category.key === categoryKey);
+    const category = getCategoryByKey(categoryKey);
 
     if (!category) {
         return new Response("Invalid category", {status: 400});
@@ -26,5 +34,5 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         return new Response("Failed to fetch news: " + error, {status: 500});
     }
-    
+
 }

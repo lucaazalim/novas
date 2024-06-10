@@ -34,6 +34,11 @@ export type Category = {
     icon: IconType;
 };
 
+export type Country = {
+    code: string;
+    name: string;
+}
+
 export const Categories: Category[] = [
     {key: 'general', name: 'General', icon: FaGlobe},
     {key: 'business', name: 'Business', icon: FaBriefcase},
@@ -43,11 +48,6 @@ export const Categories: Category[] = [
     {key: 'sports', name: 'Sports', icon: FaFootball},
     {key: 'technology', name: 'Technology', icon: FaMicrochip}
 ];
-
-export type Country = {
-    code: string;
-    name: string;
-}
 
 export const UnitedStates = {code: 'US', name: 'United States'};
 
@@ -106,6 +106,14 @@ export const Countries: Country[] = [
     {code: 'UA', name: 'Ukraine'},
     {code: 'VE', name: 'Venezuela'}
 ];
+
+export function getCategoryByKey(key: string): Category | undefined {
+    return Categories.find(category => category.key.toLowerCase() === key.toLowerCase());
+}
+
+export function getCountryByCode(code: string): Country | undefined {
+    return Countries.find(country => country.code.toLowerCase() === code.toLowerCase());
+}
 
 export default async function fetchNews({country, category}: NewsConfig): Promise<NewsResponse> {
 
