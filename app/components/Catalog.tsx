@@ -56,7 +56,7 @@ function CatalogArticle({article}: CatalogArticleProps) {
                 </a>
                 <h2 className="font-light">{article.description}</h2>
             </div>
-            <h3 className="opacity-50">{timeAgo(article.publishedAt)}</h3>
+            <h3 className="opacity-50">{timeAgo(new Date(article.publishedAt))}</h3>
         </div>
     </div>;
 

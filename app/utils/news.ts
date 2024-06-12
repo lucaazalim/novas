@@ -13,7 +13,7 @@ export type Article = {
     description: string | null;
     url: string;
     urlToImage: string | null;
-    publishedAt: string;
+    publishedAt: Date;
     content: string | null;
 };
 
