@@ -1,67 +1,55 @@
 "use client";
 
-import {getWeatherIconURL} from "@/app/utils/weather";
+import {Weather} from "@/app/utils/weather";
 import {useEffect, useState} from "react";
 import Loading from "@/app/components/Loading";
+import {FaArrowDown, FaArrowUp} from "react-icons/fa6";
 
 export default function WeatherForecastWidget() {
 
-    const [data, setData] = useState<any>(null);
+    const [weather, setWeather] = useState<Weather>();
 
     useEffect(() => {
         fetch('/api/weather')
             .then((response) => response.json())
-            .then((data) => setData(data));
+            .then((data) => setWeather(data));
     }, []);
 
-    if (!data) {
+    if (!weather) {
         return <Loading className="h-24"/>
     }
 
-    const weatherCondition = data.weather[0];
-    const weatherIconUrl = getWeatherIconURL(weatherCondition.icon);
+    const todayTemperatures = weather.forecast
+        .filter(item => new Date(item.datetime!).getTime() > new Date().getTime() - 86400000)
+        .map(item => item.temperature);
+
+    const todayMinimumTemperature = Math.min(...todayTemperatures);
+    const todayMaximumTemperature = Math.max(...todayTemperatures);
 
     return <>
         <div className="grid grid-cols-2 gap-2 items-center">
-            <div className="border-r-2 h-full flex flex-col justify-center">
-                <h1 className="font-semibold">{data.name}</h1>
-                <div className="text-4xl font-bold flex items-center">
-                    {data.main.temp | 0}°
+            <div className="border-r-2 h-full flex flex-col justify-center gap-2">
+                <h1 className="font-semibold">{weather.city}</h1>
+                <div className="grid grid-cols-2 grid-rows-2 gap-x-2">
+                    <div className="row-span-2 text-4xl font-bold flex items-center">
+                        {weather.current.temperature}°
+                    </div>
+                    <span className="flex items-center leading-tight">
+                        <FaArrowUp className="text-xs text-red-500 mr-1"/>
+                        {todayMaximumTemperature}°
+                    </span>
+                    <span className="flex items-center leading-tight">
+                        <FaArrowDown className="text-xs text-blue-500 mr-1"/>
+                        {todayMinimumTemperature}°
+                    </span>
                 </div>
             </div>
             <div className="flex-col mx-auto text-center">
-                <img alt="" className="mx-auto drop-shadow-intense" src={weatherIconUrl}/>
-                <h2>{weatherCondition.description}</h2>
+                <img alt="" className="mx-auto drop-shadow-lg" src={weather.current.iconUrl}/>
+                <h2>{weather.current.description}</h2>
             </div>
         </div>
 
     </>;
 
 }
-
-/*type TemperatureIconProps = {
-    temperature: number;
-    className: string;
-}
-
-function TemperatureIcon({temperature, className}: TemperatureIconProps) {
-
-    if (temperature < 10) {
-        return <FaTemperatureEmpty className={className}/>;
-    }
-
-    if (temperature < 20) {
-        return <FaTemperatureQuarter className={className}/>;
-    }
-
-    if (temperature < 30) {
-        return <FaTemperatureHalf className={className}/>;
-    }
-
-    if (temperature < 40) {
-        return <FaTemperatureThreeQuarters className={className}/>
-    }
-
-    return <FaTemperatureFull className={className}/>;
-
-}*/
