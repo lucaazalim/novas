@@ -7,10 +7,10 @@ import Divisor from "@/app/components/Divisor";
 
 export default function Sidebar() {
     return <div className="flex flex-col gap-5">
-        <SidebarWidget title="Tempo">
+        <SidebarWidget title="Weather">
             <WeatherForecastWidget/>
         </SidebarWidget>
-        <SidebarWidget title="Bolsa">
+        <SidebarWidget title="Market">
             <div className="flex flex-col gap-4">
                 <EconomyWidget symbol="^BVSP" displaySymbol="IBOV" displayName="Ibovespa"/>
                 <Divisor/>
