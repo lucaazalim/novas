@@ -82,10 +82,7 @@ export default function EconomyWidget({symbol, displaySymbol = symbol, displayNa
     if (!displayName) {
         displayName = shortName;
     }
-
-    const color = changePercent < 0 ? "#ae0a0a" : "#099f09";
-    const tailwindColor = changePercent < 0 ? "text-[#ae0a0a]" : "text-[#099f09]";
-
+    
     const chartLabels = historicalPrices.map((price) => {
         // Not sure why I need to convert it back to Date here.
         return new Date(price.date).toLocaleDateString("en-GB");
@@ -97,7 +94,7 @@ export default function EconomyWidget({symbol, displaySymbol = symbol, displayNa
             {
                 label: displaySymbol,
                 data: historicalPrices.map((price) => price.close),
-                borderColor: color,
+                borderColor: historicalPrices[0].close > historicalPrices[historicalPrices.length - 1].close ? "#ae0a0a" : "#099f09",
                 pointRadius: 0,
                 tension: 0.1,
             },
@@ -111,7 +108,7 @@ export default function EconomyWidget({symbol, displaySymbol = symbol, displayNa
                 <p className="text-sm">{displayName}</p>
             </div>
             <div className="text-right">
-                <p className={`text-xl font-bold ${tailwindColor}`}>{changePercent.toFixed(2)}%</p>
+                <p className={`text-xl font-bold ${changePercent < 0 ? "text-[#ae0a0a]" : "text-[#099f09]"}`}>{changePercent.toFixed(2)}%</p>
                 <p className="text-sm">{formatPrice(lastPrice, symbol)}</p>
             </div>
         </div>
