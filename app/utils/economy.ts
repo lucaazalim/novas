@@ -15,8 +15,7 @@ export type HistoricalPrice = {
 export default async function fetchQuote(ticker: string): Promise<Quote> {
 
     const response = await fetch(
-        `https://brapi.dev/api/quote/${ticker}?range=1mo&interval=1d&fundamental=true&token=${process.env.BRAPI_KEY}`,
-        {next: {revalidate: 60}}
+        `https://brapi.dev/api/quote/${ticker}?range=1mo&interval=1d&fundamental=true&token=${process.env.BRAPI_KEY}`
     );
 
     const json = await response.json();
