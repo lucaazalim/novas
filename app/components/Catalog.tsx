@@ -13,10 +13,20 @@ export default function Catalog({news}: CatalogProps) {
         return;
     }
 
-    const {articles} = news;
+    let {articles} = news;
+
+    // The three first articles are only shown in the featured area
+    articles = articles.slice(3);
+
+    const articlesWithImage = articles.filter(article => article.urlToImage);
+
+    // If there are at least 10 articles with image, we will only use them
+    if (articlesWithImage.length >= 10) {
+        articles = articlesWithImage;
+    }
 
     return <div className="grid grid-cols-1 sm:max-lg:grid-cols-2 max-lg:gap-5">
-        {articles.slice(3).map((article, index) =>
+        {articles.map((article, index) =>
             <>
                 <CatalogArticle key={index} article={article}/>
                 <Divisor className="hidden lg:block [&:last-child]:hidden"/>
