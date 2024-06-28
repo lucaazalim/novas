@@ -3,7 +3,7 @@ import {FaArrowUpRightFromSquare} from "react-icons/fa6";
 export default function Footer() {
 
     return <footer className="bg-primary">
-        <div className="max-w-[1200px] px-5 py-5 mx-auto text-white">
+        <div className="max-w-[1200px] px-5 py-10 mx-auto text-white">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <FooterBlock className="flex justify-center">
                     <img src="/logo.svg" alt="logo" className="w-32"/>
