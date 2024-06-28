@@ -21,8 +21,8 @@ import fetchNews from "@/app/integrations/news/fetchNews";
 
 export default function Home() {
 
-    const [country, setCountry] = useState<Country>(UnitedStates);
-    const [category, setCategory] = useState<Category>(Categories[0]);
+    const [country, setCountry] = useState<Country>();
+    const [category, setCategory] = useState<Category>();
     const [news, setNews] = useState<NewsResponse | undefined>(undefined);
     const [isCountrySelectorOpen, setCountrySelectorOpen] = useState(false);
     const [isCategorySelectorOpen, setCategorySelectorOpen] = useState(false);
@@ -34,6 +34,8 @@ export default function Home() {
             if (storedCountry) {
                 setCountry(storedCountry);
             }
+        } else {
+            setCountry(UnitedStates);
         }
     }, []);
 
@@ -44,20 +46,10 @@ export default function Home() {
             if (storedCategory) {
                 setCategory(storedCategory);
             }
+        } else {
+            setCategory(Categories[0]);
         }
     }, []);
-
-    useEffect(() => {
-        if (country) {
-            localStorage.setItem("country", country.code);
-        }
-    }, [country]);
-
-    useEffect(() => {
-        if (category) {
-            localStorage.setItem("category", category.key);
-        }
-    }, [category]);
 
     useEffect(() => {
 
@@ -76,7 +68,11 @@ export default function Home() {
                 isOpen={isCountrySelectorOpen}
                 onClose={() => setCountrySelectorOpen(false)}
                 selected={country}
-                select={(country) => setCountry(country)}/>
+                select={(country) => {
+                    localStorage.setItem("country", country.code);
+                    setCountry(country);
+                }}
+            />
         )}
 
         {isCategorySelectorOpen && (
@@ -84,7 +80,11 @@ export default function Home() {
                 isOpen={isCategorySelectorOpen}
                 onClose={() => setCategorySelectorOpen(false)}
                 selected={category}
-                select={(category) => setCategory(category)}/>
+                select={(category) => {
+                    localStorage.setItem("category", category.key);
+                    setCategory(category);
+                }}
+            />
         )}
 
         <div
