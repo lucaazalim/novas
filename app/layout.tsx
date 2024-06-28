@@ -16,7 +16,7 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
         <html lang="en">
         <body className={`{inter.className} bg-gray-100 text-gray-800`}>
         <Navbar/>
-        <main className="max-w-[1200px] px-5 mx-auto">
+        <main className="max-w-[1200px] p-5 mx-auto">
             {children}
         </main>
         <Footer/>

@@ -15,7 +15,7 @@ export default function Footer() {
                         reputable third parties, ensuring you receive a diverse and comprehensive view of current
                         events.</p>
                 </FooterBlock>
-                <FooterBlock className="flex flex-col justify-between">
+                <FooterBlock className="flex flex-col justify-between gap-3">
                     <div>
                         <h1 className="font-bold text-xl mb-3">Open-source</h1>
                         <p className="font-extralight">Novas was built as a side project and is completely open-source.
