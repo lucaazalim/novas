@@ -1,5 +1,5 @@
 import Modal from "@/app/components/modal/Modal";
-import {Categories, Category} from "@/app/utils/news";
+import {Categories, Category} from "@/app/integrations/news/news";
 import {IconType} from "react-icons";
 
 type CategorySelectorProps = {

@@ -1,12 +1,12 @@
 import {headers} from "next/headers";
 
-type IPInfo = {
+export type IPInfo = {
     ip: string;
     lat: number;
     lon: number;
 }
 
-const FALLBACK_IP_INFO: IPInfo = {
+export const FALLBACK_IP_INFO: IPInfo = {
     ip: '127.0.0.1',
     lat: -19.9167,
     lon: -43.9345

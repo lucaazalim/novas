@@ -12,9 +12,10 @@ import {
 } from 'chart.js';
 
 import {Line} from "react-chartjs-2";
-import {formatPrice, Quote} from "@/app/utils/economy";
+import {formatPrice, Quote} from "@/app/integrations/economy/economy";
 import {useEffect, useState} from "react";
 import Loading from "@/app/components/Loading";
+import fetchQuote from "@/app/integrations/economy/fetchQuote";
 
 ChartJS.register(
     CategoryScale,
@@ -60,15 +61,14 @@ type EconomyWidgetProps = {
 
 export default function EconomyWidget({symbol, displaySymbol = symbol, displayName}: EconomyWidgetProps) {
 
-    const [data, setData] = useState<Quote>();
+    const [quote, setQuote] = useState<Quote>();
 
     useEffect(() => {
-        fetch('/api/economy?symbol=' + symbol)
-            .then((response) => response.json())
-            .then((data) => setData(data));
-    }, []);
+        fetchQuote(symbol)
+            .then((quote) => setQuote(quote));
+    }, [symbol]);
 
-    if (!data) {
+    if (!quote) {
         return <Loading className="h-28"/>;
     }
 
@@ -77,12 +77,12 @@ export default function EconomyWidget({symbol, displaySymbol = symbol, displayNa
         lastPrice,
         changePercent,
         historicalPrices
-    } = data;
+    } = quote;
 
     if (!displayName) {
         displayName = shortName;
     }
-    
+
     const chartLabels = historicalPrices.map((price) => {
         // Not sure why I need to convert it back to Date here.
         return new Date(price.date).toLocaleDateString("en-GB");

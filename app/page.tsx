@@ -9,7 +9,7 @@ import {
     getCountryByCode,
     NewsResponse,
     UnitedStates
-} from "@/app/utils/news";
+} from "@/app/integrations/news/news";
 import {useEffect, useState} from "react";
 import Featured from "@/app/components/Featured";
 import CountrySelector from "@/app/components/config/CountrySelector";
@@ -17,6 +17,7 @@ import {FaEdit} from "react-icons/fa";
 import CategorySelector from "@/app/components/config/CategorySelector";
 import Sidebar from "@/app/components/sidebar/Sidebar";
 import Loading from "@/app/components/Loading";
+import fetchNews from "@/app/integrations/news/fetchNews";
 
 export default function Home() {
 
@@ -64,10 +65,7 @@ export default function Home() {
             return;
         }
 
-        let url = `/api/news?country=${country.code}&category=${category.key}`;
-
-        fetch(url)
-            .then(response => response.json())
+        fetchNews(country.code, category.key)
             .then(data => setNews(data));
 
     }, [country, category]);
@@ -89,50 +87,48 @@ export default function Home() {
                 select={(category) => setCategory(category)}/>
         )}
 
-        <div className="mt-5">
-            <div
-                className="bg-white rounded-xl border-2 p-3 mb-5 inline-flex w-full gap-2 items-center justify-center">
+        <div
+            className="bg-white rounded-xl border-2 p-3 mb-5 inline-flex w-full gap-2 items-center justify-center">
 
-                {!country || !category
-                    ? <Loading className="h-10 w-full"/>
-                    : <>
-                        <span className="hidden sm:block">You are viewing news from</span>
+            {!country || !category
+                ? <Loading className="h-10 w-full"/>
+                : <>
+                    <span className="hidden sm:block">You are viewing news from</span>
 
-                        <button
-                            onClick={() => setCountrySelectorOpen(true)}
-                            className="font-bold bg-gray-200 p-2 rounded-xl hover:bg-gray-300"
-                        >
-                            <div className="flex flex-row items-center gap-2">
-                                <span>{country?.name}</span>
-                                <FaEdit/>
-                            </div>
-                        </button>
+                    <button
+                        onClick={() => setCountrySelectorOpen(true)}
+                        className="font-bold bg-gray-200 p-2 rounded-xl hover:bg-gray-300"
+                    >
+                        <div className="flex flex-row items-center gap-2">
+                            <span>{country?.name}</span>
+                            <FaEdit/>
+                        </div>
+                    </button>
 
-                        <span className="hidden sm:block">about</span>
+                    <span className="hidden sm:block">about</span>
 
-                        <button
-                            onClick={() => setCategorySelectorOpen(true)}
-                            className="font-bold bg-gray-200 p-2 rounded-xl hover:bg-gray-300"
-                        >
-                            <div className="flex flex-row items-center gap-2">
-                                <span>{category?.name}</span>
-                                <FaEdit/>
-                            </div>
-                        </button>
-                    </>
-                }
+                    <button
+                        onClick={() => setCategorySelectorOpen(true)}
+                        className="font-bold bg-gray-200 p-2 rounded-xl hover:bg-gray-300"
+                    >
+                        <div className="flex flex-row items-center gap-2">
+                            <span>{category?.name}</span>
+                            <FaEdit/>
+                        </div>
+                    </button>
+                </>
+            }
 
+        </div>
+
+        <Featured news={news}/>
+
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <div className="lg:col-span-2">
+                <Catalog news={news}/>
             </div>
-
-            <Featured news={news}/>
-
-            <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-5">
-                <div className="lg:col-span-2">
-                    <Catalog news={news}/>
-                </div>
-                <div className="hidden lg:block">
-                    <Sidebar/>
-                </div>
+            <div className="hidden lg:block">
+                <Sidebar/>
             </div>
         </div>
     </>;

@@ -1,6 +1,6 @@
 "use client";
 
-import {Article, NewsResponse} from "@/app/utils/news";
+import {Article, NewsResponse} from "@/app/integrations/news/news";
 import Loading from "@/app/components/Loading";
 
 type FeaturedProps = {
@@ -8,7 +8,7 @@ type FeaturedProps = {
 }
 
 export default function Featured({news}: FeaturedProps) {
-    
+
     const articles = news?.articles;
     const firstFeatured = articles?.[0];
     const secondFeatured = articles?.[1];

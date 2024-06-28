@@ -23,11 +23,6 @@ export type NewsResponse = {
     articles: Article[];
 };
 
-export type NewsConfig = {
-    country: Country;
-    category?: Category;
-};
-
 export type Category = {
     key: string;
     name: string;
@@ -115,41 +110,7 @@ export function getCountryByCode(code: string): Country | undefined {
     return Countries.find(country => country.code.toLowerCase() === code.toLowerCase());
 }
 
-export default async function fetchNews({country, category}: NewsConfig): Promise<NewsResponse> {
-
-    let url = `https://newsapi.org/v2/top-headlines?country=${country.code}&apiKey=${process.env.NEWS_API_KEY}`;
-
-    if (category) {
-        url += `&category=${category.key}`;
-    }
-
-    const response = await fetch(url);
-
-    if (!response.ok) {
-        throw new Error("Failed to fetch news");
-    }
-
-    const json = await response.json();
-
-    json.articles = json.articles
-        .filter((article: Article) =>
-            article.title !== "[Removed]"
-        )
-        .sort((a: Article, b: Article) => {
-            if (a.urlToImage && !b.urlToImage) return -1;
-            if (!a.urlToImage && b.urlToImage) return 1;
-            return 0;
-        });
-
-    json.articles.forEach((article: Article) => {
-        article.title = removeAfterLastDash(article.title);
-    });
-
-    return json as NewsResponse;
-
-}
-
-function removeAfterLastDash(input: string): string {
+export function removeAfterLastDash(input: string): string {
     const lastDashIndex = input.lastIndexOf('-');
     if (lastDashIndex === -1) {
         return input;

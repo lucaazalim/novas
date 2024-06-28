@@ -1,5 +1,5 @@
 import Modal from "@/app/components/modal/Modal";
-import {Countries, Country} from "@/app/utils/news";
+import {Countries, Country} from "@/app/integrations/news/news";
 import {getFlagEmoji} from "@/app/utils/emoji";
 
 type CountrySelectorProps = {
