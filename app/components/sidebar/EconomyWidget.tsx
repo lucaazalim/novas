@@ -61,11 +61,10 @@ type EconomyWidgetProps = {
 
 export default function EconomyWidget({symbol, displaySymbol = symbol, displayName}: EconomyWidgetProps) {
 
-    const [quote, setQuote] = useState<Quote>();
+    const [quote, setQuote] = useState<Quote | null>();
 
     useEffect(() => {
-        fetchQuote(symbol)
-            .then((quote) => setQuote(quote));
+        fetchQuote(symbol).then((quote) => setQuote(quote));
     }, [symbol]);
 
     if (!quote) {

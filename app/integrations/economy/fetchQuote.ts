@@ -2,7 +2,7 @@
 
 import {Quote} from "@/app/integrations/economy/economy";
 
-export default async function fetchQuote(ticker: string): Promise<Quote> {
+export default async function fetchQuote(ticker: string): Promise<Quote | null> {
 
     const response = await fetch(
         `https://brapi.dev/api/quote/${ticker}?range=1mo&interval=1d&fundamental=true&token=${process.env.BRAPI_KEY}`
@@ -10,6 +10,11 @@ export default async function fetchQuote(ticker: string): Promise<Quote> {
 
     const json = await response.json();
     const result = json.results?.[0];
+
+    if (!result.symbol) {
+        return null;
+    }
+
     const historicalPrices = result.historicalDataPrice;
 
     return {
