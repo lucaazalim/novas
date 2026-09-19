@@ -1,0 +1,72 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "typescript",
+    "unicorn",
+    "oxc",
+    "import",
+    "react",
+    "react-perf",
+    "nextjs",
+    "jsx-a11y",
+    "promise"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2024": true
+  },
+  "options": {
+    "typeAware": true,
+    "reportUnusedDisableDirectives": "warn"
+  },
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "settings": {
+    "react": { "version": "19.3" },
+    "jsx-a11y": { "components": { "Link": "a", "Image": "img" } }
+  },
+  "rules": {
+    "typescript/no-floating-promises": "error",
+    "typescript/no-misused-promises": "error",
+    "typescript/await-thenable": "error",
+    "typescript/no-unnecessary-type-assertion": "warn",
+    "typescript/consistent-type-imports": "error",
+    "typescript/no-explicit-any": "error",
+    "import/no-cycle": "error",
+    "import/no-duplicates": "error",
+    "import/no-unassigned-import": ["warn", { "allow": ["**/*.css"] }],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-key": "error",
+    "react/no-array-index-key": "warn",
+    "react/self-closing-comp": "warn",
+    "react/jsx-no-useless-fragment": "warn",
+    "react-perf/jsx-no-new-function-as-prop": "off",
+    "react-perf/jsx-no-new-object-as-prop": "off",
+    "react-perf/jsx-no-new-array-as-prop": "off",
+    "react-perf/jsx-no-jsx-as-prop": "off",
+    "typescript/no-unsafe-type-assertion": "off",
+    "jsx-a11y/anchor-is-valid": "error",
+    "jsx-a11y/alt-text": "error",
+    "jsx-a11y/no-autofocus": "off",
+    "unicorn/prefer-node-protocol": "error",
+    "unicorn/no-array-for-each": "off",
+    "unicorn/filename-case": "off",
+    "oxc/no-map-spread": "off",
+    "eqeqeq": "error",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "prefer-const": "error",
+    "no-var": "error"
+  },
+  "overrides": [
+    {
+      "files": ["public/sw.js"],
+      "env": { "serviceworker": true, "browser": true },
+      "rules": { "no-console": "off" }
+    }
+  ],
+  "ignorePatterns": [".next/", "node_modules/", "next-env.d.ts", "*.tsbuildinfo"]
+}

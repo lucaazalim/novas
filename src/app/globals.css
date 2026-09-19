@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+/* Dark mode is driven by `data-theme` on <html>, set before paint by ThemeScript. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  color-scheme: light;
+  --bg: #f3f4f6;
+  --surface: #ffffff;
+  --surface-muted: #f9fafb;
+  --border: #e5e7eb;
+  --fg: #1f2937;
+  --muted: #6b7280;
+  --brand: #0c2faa;
+  --brand-strong: #092483;
+  --brand-soft: #e8ecfb;
+  --brand-fg: #ffffff;
+  --up: #15803d;
+  --down: #b91c1c;
+  --live: #dc2626;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b1020;
+  --surface: #131a33;
+  --surface-muted: #1a2242;
+  --border: #283158;
+  --fg: #e5e7eb;
+  --muted: #a1a8bd;
+  --brand: #3b5bdb;
+  --brand-strong: #2f4bc0;
+  --brand-soft: #1b2450;
+  --brand-fg: #ffffff;
+  --up: #4ade80;
+  --down: #f87171;
+  --live: #f87171;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-fg: var(--brand-fg);
+  --color-up: var(--up);
+  --color-down: var(--down);
+  --color-live: var(--live);
+
+  --radius-card: 0.75rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  dialog::backdrop {
+    background-color: rgb(0 0 0 / 0.45);
+    backdrop-filter: blur(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-card border-border bg-surface border;
+  }
+
+  /* View option: hide stories without artwork. Toggled on <html> by ViewOptions. */
+  html[data-hide-imageless="true"] [data-has-image="false"] {
+    display: none;
+  }
+}
+
+@layer components {
+  body:has(dialog[open]) {
+    overflow: hidden;
+  }
+}
