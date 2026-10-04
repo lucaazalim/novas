@@ -11,6 +11,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { getTopHeadlines } from "@/lib/news/api";
 import { findCategory, findCountry } from "@/lib/news/constants";
 import { headlinesHref, type HeadlinesRoute } from "@/lib/news/params";
+import { parseDate } from "@/lib/utils/time";
 
 const FEATURED_COUNT = 3;
 
@@ -41,7 +42,6 @@ type HeadlinesProps = {
 export async function Headlines({ route }: HeadlinesProps) {
   await io();
   const result = await getTopHeadlines(route);
-  const now = new Date();
   const title = headlinesTitle(route);
   const country = findCountry(route.country);
   const category = findCategory(route.category);
@@ -104,7 +104,10 @@ export async function Headlines({ route }: HeadlinesProps) {
           <h2 id="latest-heading" className="sr-only">
             More stories
           </h2>
-          <ArticleList articles={rest} now={now} />
+          <ArticleList
+            articles={rest}
+            now={parseDate(result.generatedAt) ?? parseDate("1970-01-01T00:00:00.000Z")!}
+          />
           <Pagination
             page={route.page}
             totalPages={result.totalPages}

@@ -34,6 +34,7 @@ export type NewsPage = {
   page: number;
   pageSize: number;
   totalPages: number;
+  generatedAt: string;
   /** True when at least one provider failed but others still delivered. */
   partial: boolean;
 };
