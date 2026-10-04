@@ -10,6 +10,7 @@ import { SearchForm } from "@/components/news/search-form";
 import { EmptyState } from "@/components/ui/empty-state";
 import { searchEverything } from "@/lib/news/api";
 import { searchHref, type SearchRoute } from "@/lib/news/params";
+import { parseDate } from "@/lib/utils/time";
 
 export async function SearchResults({ route }: { route: SearchRoute }) {
   if (!route.q) {
@@ -29,7 +30,6 @@ export async function SearchResults({ route }: { route: SearchRoute }) {
 
   await io();
   const result = await searchEverything(route);
-  const now = new Date();
   const title = `Results for “${route.q}”`;
 
   return (
@@ -57,7 +57,10 @@ export async function SearchResults({ route }: { route: SearchRoute }) {
             {route.page > 1 ? ` · page ${route.page}` : ""}
           </h2>
           {result.partial ? <PartialNotice /> : null}
-          <ArticleList articles={result.articles} now={now} />
+          <ArticleList
+            articles={result.articles}
+            now={parseDate(result.generatedAt) ?? parseDate("1970-01-01T00:00:00.000Z")!}
+          />
           <Pagination
             page={route.page}
             totalPages={result.totalPages}

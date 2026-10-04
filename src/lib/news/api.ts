@@ -39,6 +39,7 @@ type Pool = {
   errors: NewsError[];
   /** Number of providers that were asked. */
   attempted: number;
+  now: Date;
 };
 
 function rangeToMs(range: DateRange): number {
@@ -108,7 +109,7 @@ async function getHeadlinesPool(country: string, category: string, q: string): P
     now,
     positionsOf(lists),
   );
-  const pool = { articles, errors, attempted: providers.length };
+  const pool = { articles, errors, attempted: providers.length, now };
   applyCacheLife(pool);
   return pool;
 }
@@ -133,7 +134,7 @@ async function getSearchPool(
     sortBy === "publishedAt"
       ? rankByFreshness(dedupeArticles(fresh.flat()), now, positionsOf(fresh))
       : dedupeArticles(interleave(fresh));
-  const pool = { articles, errors, attempted: providers.length };
+  const pool = { articles, errors, attempted: providers.length, now };
   applyCacheLife(pool);
   return pool;
 }
@@ -143,7 +144,7 @@ function paginate(pool: Pool, page: number): NewsResult {
   if (pool.articles.length === 0 && pool.errors.length > 0) {
     const missingEverywhere = pool.errors.every((error) => error.code === "missing-key");
     const error = pool.errors.find((item) => item.code !== "missing-key") ?? pool.errors[0] ?? null;
-    if (!error) return paginateArticles([], page, false);
+    if (!error) return paginateArticles([], page, false, pool.now);
     return {
       ok: false,
       error: missingEverywhere ? { ...error, message: ERROR_MESSAGES["missing-key"] } : error,
@@ -155,10 +156,15 @@ function paginate(pool: Pool, page: number): NewsResult {
       error: { provider: "newsapi", code: "missing-key", message: ERROR_MESSAGES["missing-key"] },
     };
   }
-  return paginateArticles(pool.articles, page, pool.errors.length > 0);
+  return paginateArticles(pool.articles, page, pool.errors.length > 0, pool.now);
 }
 
-function paginateArticles(articles: Article[], page: number, partial: boolean): NewsResult {
+function paginateArticles(
+  articles: Article[],
+  page: number,
+  partial: boolean,
+  now: Date,
+): NewsResult {
   const totalPages = Math.max(1, Math.ceil(articles.length / PAGE_SIZE));
   const current = Math.min(page, totalPages);
   const start = (current - 1) * PAGE_SIZE;
@@ -169,6 +175,7 @@ function paginateArticles(articles: Article[], page: number, partial: boolean): 
     page: current,
     pageSize: PAGE_SIZE,
     totalPages,
+    generatedAt: now.toISOString(),
     partial,
   };
 }
